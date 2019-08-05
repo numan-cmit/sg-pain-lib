@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitGrid.PainLib", "SplitGrid.PainLib\SplitGrid.PainLib.csproj", "{1E629B23-5D2B-4427-9C1E-EF184AAB8115}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitGrid.PainLib.Tests", "..\tests\SplitGrid.PainLib.Tests\SplitGrid.PainLib.Tests.csproj", "{8AC74569-E036-4D2E-ACC3-997E5C2770C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitGrid.PainLib.Tests", "SplitGrid.PainLib.Tests\SplitGrid.PainLib.Tests.csproj", "{8AC74569-E036-4D2E-ACC3-997E5C2770C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
