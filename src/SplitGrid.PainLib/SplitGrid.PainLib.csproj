@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interop\PaymentInfo.cs" />
+    <Compile Include="Interop\TransactionInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reader.cs" />
     <Compile Include="Schema\pain.002.001.03\pain_002_001_03.cs" />
   </ItemGroup>
   <ItemGroup>
