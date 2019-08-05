@@ -3,6 +3,7 @@
     public class PaymentInfo
     {
         public string FileName { get; set; }
-        public TransactionInfo[] Transactions { get; set; }
+        public Payment[] Payments { get; set; }
+        public PaymentStatus Status { get; set; }
     }
 }
