@@ -74,30 +74,6 @@ namespace SplitGrid.PainLib.Tests
             }
             string appPath = exePath + "\\Files";
             var result = sut.GetPaymentsData(appPath);
-            var files = Directory.EnumerateFiles(appPath, "*.xml");
-            foreach (var file in files)
-            {
-                using (var stream = File.OpenRead(file))
-                {
-                    try
-                    {
-                        var paymentInfos = result.ToList();
-                        var paymentInfo = paymentInfos.Where(x => x.FileName.Contains(file)).FirstOrDefault();
-                        var serializer = new XmlSerializer(typeof(Document));
-                        var doc = (Document)serializer.Deserialize(stream);
-
-                        //Assert 
-                        Assert.AreEqual(paymentInfo.Payments.Length, doc.CstmrPmtStsRpt.OrgnlPmtInfAndSts.Length);
-
-                    }
-                    catch (Exception)
-                    {
-                        //return null;
-                    }
-                }
-
-            }
-
         }
 
     }
