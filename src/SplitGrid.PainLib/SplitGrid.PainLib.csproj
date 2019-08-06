@@ -45,6 +45,9 @@
     <Compile Include="Interop\Payment.cs" />
     <Compile Include="Interop\PaymentInfo.cs" />
     <Compile Include="Interop\PaymentStatus.cs" />
+    <Compile Include="Interop\ReferredDocument.cs" />
+    <Compile Include="Interop\RemittanceInfo.cs" />
+    <Compile Include="Interop\StructuredInfo.cs" />
     <Compile Include="Interop\TransactionInfo.cs" />
     <Compile Include="Interop\TransactionStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

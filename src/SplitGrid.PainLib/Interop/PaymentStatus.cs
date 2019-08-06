@@ -5,7 +5,6 @@
         Accepted,
         PartiallyAccepted,
         Pending,
-        Received,
         Rejected
     }
 }
