@@ -8,7 +8,7 @@ namespace SplitGrid.PainLib.Interop
         public string OriginialEndToEndId { get; set; }
         public Account Creditor { get; set; }
         public Account Debtor { get; set; }
-        public PaymentStatus Status { get; set; }
+        public TransactionStatus Status { get; set; }
         public decimal Amount { get; set; }
         public string[] ErrorMessages { get; set; }
         public DateTime RequestExecutionDate { get; set; }

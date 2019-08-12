@@ -2,8 +2,12 @@
 {
     public enum TransactionStatus
     {
-        Accepted,
+        TransactionAccepted,
+        Rejected,
         Pending,
-        Rejected
+        Accepted,
+        AcceptedByTheClearingSystem,
+        AcceptedSettlementCompleted,
+        TransactionAcceptedWithChange
     }
 }

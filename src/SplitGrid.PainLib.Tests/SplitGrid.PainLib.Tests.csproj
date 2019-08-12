@@ -62,9 +62,7 @@
       <Name>SplitGrid.PainLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EmptyFolder\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Files\pain.002.001.03.xml" />
   </ItemGroup>

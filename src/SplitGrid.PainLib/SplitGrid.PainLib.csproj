@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\StatusExtension.cs" />
     <Compile Include="Interop\Account.cs" />
     <Compile Include="Interop\Payment.cs" />
     <Compile Include="Interop\PaymentInfo.cs" />
@@ -59,5 +60,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

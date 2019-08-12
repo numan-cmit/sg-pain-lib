@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -40,12 +41,13 @@ namespace SplitGrid.PainLib.Tests
         }
 
         [TestMethod]
-        public void GetPaymentsInvokedWithPathExist_THEN_NoFilesResultIsEmptyArray()
+        public void WHEN_GetPaymentsInvokedWithValidPathNoFiles_THEN_ResultIsEmptyArray()
         {
             // Arrange
             var sut = new Reader();
 
-            // Act
+            // Act -create dynamically one empty folder and remove 
+
             string exePath = System.Environment.CurrentDirectory.ToString();
             if (exePath.Contains(@"\bin\Debug"))
             {
@@ -60,13 +62,12 @@ namespace SplitGrid.PainLib.Tests
         }
 
         [TestMethod]
-        public void GetPaymentsInvokedWithPathExists()
+        public void WHEN_GetPaymentsInvokedWithValidPathContainSingleFile_THEN_ResultIsOnlyOneArrayItem()
         {
             // Arrange
             var sut = new Reader();
 
             // Act
-
             string exePath = System.Environment.CurrentDirectory.ToString();
             if (exePath.Contains(@"\bin\Debug"))
             {
@@ -74,31 +75,48 @@ namespace SplitGrid.PainLib.Tests
             }
             string appPath = exePath + "\\Files";
             var result = sut.GetPaymentsData(appPath);
-            var files = Directory.EnumerateFiles(appPath, "*.xml");
-            foreach (var file in files)
-            {
-                using (var stream = File.OpenRead(file))
-                {
-                    try
-                    {
-                        var paymentInfos = result.ToList();
-                        var paymentInfo = paymentInfos.Where(x => x.FileName.Contains(file)).FirstOrDefault();
-                        var serializer = new XmlSerializer(typeof(Document));
-                        var doc = (Document)serializer.Deserialize(stream);
-
-                        //Assert 
-                        Assert.AreEqual(paymentInfo.Payments.Length, doc.CstmrPmtStsRpt.OrgnlPmtInfAndSts.Length);
-
-                    }
-                    catch (Exception)
-                    {
-                        //return null;
-                    }
-                }
-
-            }
+            // Assert
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(new DateTime(2016, 03, 16, 11, 43, 55), result.FirstOrDefault().CreationDate);
+            Assert.AreEqual("PartiallyAccepted", result.FirstOrDefault().Status.ToString());
+            Assert.AreEqual(5, result.FirstOrDefault().Payments.Length);
+            Assert.AreEqual(0, result.FirstOrDefault().ErrorMessages.Length);
 
         }
 
+        [TestMethod]
+        public void WHEN_GetPaymentsWithOnePaymentInfoContainsOnlyDebitorInfo_THEN_ResultIsOnlyOneSinglePaymentData()
+        {
+            // Arrange
+            var sut = new Reader();
+
+            // Act
+            var originalPaymentInformations = new List<OriginalPaymentInformation1> {
+                 new OriginalPaymentInformation1 { OrgnlPmtInfId = "FilA20160212TC01",
+                                                 TxInfAndSts = new List<PaymentTransactionInformation25>{
+                                                  new PaymentTransactionInformation25 { OrgnlInstrId = "0000000008", OrgnlEndToEndId= "Own reference 1", TxSts= TransactionIndividualStatus3Code.ACCP
+                                                  , OrgnlTxRef= new OriginalTransactionReference13{  Amt = new AmountType3Choice{ Item = new EquivalentAmount2 { Amt = new ActiveOrHistoricCurrencyAndAmount { Value = 25.99m} } },ReqdExctnDt = new DateTime(2016,03,16),
+                                                                  Dbtr = new PartyIdentification32 { Nm= "Debtor AB" },DbtrAcct = new CashAccount16 {Id= new AccountIdentification4Choice {Item  = new GenericAccountIdentification1 {  Id = "44444001", SchmeNm =new AccountSchemeName1Choice { Item = "BBAN" } } } },
+                                                                  DbtrAgt = new BranchAndFinancialInstitutionIdentification4{ FinInstnId = new FinancialInstitutionIdentification7 { BIC= "HANDGB20" } },RmtInf = new RemittanceInformation5{ Ustrd  = new List<string> { "Message to beneficairy" }.ToArray() }  } } }.ToArray() }
+            }; 
+
+            // assign the data over here and verify the payment info
+            var result = sut.GetPayments(originalPaymentInformations.ToArray());
+            // Assert
+            var paymentInfo = result.FirstOrDefault();
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual("FilA20160212TC01", paymentInfo.Id);
+            Assert.AreEqual(1, paymentInfo.Transactions.Length);
+            Assert.AreEqual("0000000008", paymentInfo.Transactions[0].OriginialInstructionId);
+            Assert.AreEqual("Own reference 1", paymentInfo.Transactions[0].OriginialEndToEndId);
+            Assert.AreEqual("Accepted", paymentInfo.Transactions[0].Status.ToString());
+            Assert.AreEqual(25.99m, paymentInfo.Transactions[0].Amount);
+            Assert.AreEqual(new DateTime(2016, 03, 16), paymentInfo.Transactions[0].RequestExecutionDate);
+            Assert.AreEqual("Debtor AB", paymentInfo.Transactions[0].Debtor.Name);
+            Assert.AreEqual("44444001", paymentInfo.Transactions[0].Debtor.IBanOrAccntNumber);
+            Assert.AreEqual("BBAN", paymentInfo.Transactions[0].Debtor.AccountUsageType);
+            Assert.AreEqual("HANDGB20", paymentInfo.Transactions[0].Debtor.BankerBusinessIdentifierCode);
+            Assert.AreEqual("Message to beneficairy", paymentInfo.Transactions[0].Remittance.UnStructuredMessage[0]);
+        }
     }
 }

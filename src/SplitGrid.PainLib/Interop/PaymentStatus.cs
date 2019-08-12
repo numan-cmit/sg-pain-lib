@@ -2,9 +2,14 @@
 {
     public enum PaymentStatus
     {
-        Accepted,
+        TransactionAccepted,
+        Received,
         PartiallyAccepted,
+        Rejected,
         Pending,
-        Rejected
+        Accepted,
+        AcceptedByTheClearingSystem,
+        AcceptedSettlementCompleted,
+        TransactionAcceptedWithChange
     }
 }
